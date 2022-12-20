@@ -1,0 +1,141 @@
+Pontos para lidar com:
+-O stock de cada de produto:
+    -NonPersihable
+    -Persihable (tem data limte para o consumo)
+o dinheiro:
+    -Deve dar o troco com o minimo de moedas possiveis
+    -tem de ter maneira de ver quanto dinheiro tem (acho eu)
+
+
+-----------------------------------------------------------------------
+
+
+classes dadas que temos de ter:
+
+public interface Freshness {
+
+    /**
+     * @return true if is outdated and false otherwise
+     */
+    public boolean isOutDated();
+
+    /**
+     * @return true if is from today and false otherwise
+     */
+    public boolean isFromToday();
+
+}
+
+-----------------------------------------------------------------------
+
+import java.io.Serializable;
+
+/**
+ * Generic class that defines the basic element
+ * composed by a number of parameterized things
+ */
+
+public class Element<T> implements Serializable {
+
+    // data members
+
+    private int count;
+    private T thing;
+
+    // -----------------------------------------
+    //
+    // Constructors:
+    //
+    // -----------------------------------------
+
+    public Element(int count, T thing) {
+        this.count = count;
+        this.thing = thing;
+    }
+
+    /**
+     * Returns the number of elements
+     * @return int
+     */
+    public int getCount() {
+        return count;
+    }
+
+    /**
+     * Sets the number of elements
+     * @param count
+     */
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    /**
+     * Returns the parameterized thing
+     * @return T
+     */
+    public T getThing() {
+        return thing;
+    }
+
+    /**
+     * Sets the parameterized thing
+     * @param thing
+     */
+    public void setThing(T thing) {
+        this.thing = thing;
+    }
+
+    /**
+     * @return String
+     */
+    @Override
+    public String toString() {
+        return "Element ["+ getThing().getClass().getSimpleName() + "=" +
+        thing + ", count = " + getCount() + "]";
+    }
+
+}
+
+-------------------------------------------------------------------------------------------
+
+Metodos dados que tambem temos de usar:
+
+Para a class ElementarMachine<T>: (class abstract que vamos usar para criar a VendingMachine)
+- `public void addThings(int n, T)`: adiciona `n` coisas
+- `public boolean removeOneThing(T)`: remove uma coisa
+- `public void listAll()`: escreve a lista de coisas
+
+
+ProductMachine:
+
+- `public void addProduct(int n, Product)`: adiciona `n` produtos
+- `public boolean hasProduct(Product)`
+- `public void listAllOrdered( )`: lista todos os produtos por ordem crescente de custo
+
+
+MoneyMachine:
+
+- `public float getTotalValue()`: devolve o valor total na máquina
+- `public void addMoney(int n, float)`: adiciona `n` vezes o `float`
+
+VendingMachine:
+
+métodos de classes:
+
+- `public static void saveMachine(VendingMachine, String)`: guarda a máquina num ficheiro com o nome dado
+- `public static VendingMachine restoreMachine(String)`: devolve a máquina contida no ficheiro com o nome dado
+
+e os métodos de instância:
+
+- `public ProductMachine getProductMachine()`
+- `public void setProductMachine(ProductMachine)`
+
+
+
+Pontos extra se encontramos maneira de usar valores reais de conversao de moeda para o dinheiro... mas duvido
+que podemos fazer isso que o professor vai usar testes prefeitos para testar o codigo outra vez
+mas pronto.
+Ah e o professor parece gostar ou pelo menos nao se importar com umas piadas aqui e ali mas nao deve ser
+so ele a avaliar...
+
+
