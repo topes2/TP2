@@ -1,5 +1,5 @@
 import java.util.Calendar;
-import java.util.Date;
+
 
 abstract class Product {
     String name;
@@ -14,7 +14,7 @@ class Perishable extends Product implements Freshness {
     Calendar limitDate;
     Calendar dayAdded;
     String name;
-    Perishable(String name,Calendar limitDate,float cost) {
+    public Perishable(String name,Calendar limitDate,float cost) {
         this.name = name;
         this.limitDate = limitDate;
         this.cost = cost;
@@ -45,7 +45,7 @@ class NonPerishable extends Product{
         return volume;
     }
 
-    NonPerishable(String name,float cost,float volume){
+    public NonPerishable(String name,float cost,float volume){
         this.name = name;
         this.cost = cost;
         this.volume = volume;
