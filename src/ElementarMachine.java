@@ -1,13 +1,14 @@
 import java.util.ArrayList;
 
 
+@SuppressWarnings("unchecked")
 public class ElementarMachine<T> {
 
     ArrayList<Element<T>> elements;
 
 
     public ElementarMachine(){
-        elements = new ArrayList<Element<T>>();
+        elements = new ArrayList<>();
     }
 
 
