@@ -14,7 +14,7 @@ class Perishable extends Product implements Freshness {
     Calendar limitDate;
     Calendar dayAdded;
     String name;
-    public Perishable(String name,Calendar limitDate,float cost) {
+    public Perishable(String name,float cost, Calendar limitDate) {
         this.name = name;
         this.limitDate = limitDate;
         this.cost = cost;
