@@ -50,7 +50,7 @@ public class Element<T> implements Serializable {
     /**
      * Sets the parameterized thing
      * @param thing
-     */
+     **/
     public void setThing(T thing) {
         this.thing = thing;
     }
