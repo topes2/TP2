@@ -1,4 +1,4 @@
-import java.util.Calendar;
+import java.util.Date;
 
 
 abstract class Product {
@@ -11,10 +11,10 @@ abstract class Product {
 }
 
 class Perishable extends Product implements Freshness {
-    Calendar limitDate;
-    Calendar dayAdded;
+    Date limitDate;
+    Date dayAdded;
     String name;
-    public Perishable(String name,float cost, Calendar limitDate) {
+    public Perishable(String name,float cost, Date limitDate) {
         this.name = name;
         this.limitDate = limitDate;
         this.cost = cost;
@@ -25,15 +25,17 @@ class Perishable extends Product implements Freshness {
     }
 
     @Override
-    public boolean isFromToday(Calendar today){
-        if( today.get(Calendar.MONTH) == dayAdded.get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH)  == dayAdded.get(Calendar.DAY_OF_MONTH))
+    public boolean isFromToday(){
+        Date today = new Date();
+        if( today.getMonth() == dayAdded.getMonth() && today.getDay()  == dayAdded.getDay())
             return true;
         return false;
     }
 
     @Override
-    public boolean isOutDated(Calendar today) {
-        if( today.get(Calendar.MONTH) > limitDate.get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH)  > limitDate.get(Calendar.DAY_OF_MONTH))
+    public boolean isOutDated() {
+        Date today = new Date();
+        if( today.getMonth() > limitDate.getMonth() && today.getDay()  > limitDate.getDay())
             return true;
         return false;
     }
