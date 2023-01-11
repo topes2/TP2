@@ -1,9 +1,7 @@
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
-@SuppressWarnings("unchecked")
+
 class Perishable extends Product implements Freshness {
     Date limitDate;
     Date dayAdded;
@@ -49,7 +47,7 @@ class Perishable extends Product implements Freshness {
         try {
             now = sdformat.parse(sdformat.format(now));
         }
-        catch ( ParseException e){
+        catch ( Exception e){
             System.out.println(e.getMessage());
         }
 

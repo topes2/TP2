@@ -28,7 +28,7 @@ public class ProductMachine extends ElementarMachine<Product> {
                 return true;
             }
         }
-
+        return false;
     }
     public void listAllOrdered( ){}
 }
