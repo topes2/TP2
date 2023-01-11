@@ -7,6 +7,11 @@ public abstract class Product {
     double getvalue(){
         return cost;
     }
+
+    public String getName() {
+        return name;
+    }
+
     abstract boolean is_persihable();
 }
 
