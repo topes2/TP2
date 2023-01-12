@@ -3,6 +3,7 @@
 class NonPerishable extends Product{
     double volume;
     double getVolume(){
+
         return volume;
     }
 

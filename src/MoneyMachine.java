@@ -14,7 +14,7 @@ public class MoneyMachine extends ElementarMachine<Float> implements Serializabl
         return totalValue;
     }
 
-    public void addThings(int n, float f){
+    public void addThings(int n, Float f){
 
         for (int i = 0; i < elements.size(); i++) {
             if(Float.toString(elements.get(i).getThing()).equals(Float.toString(f)) ){
@@ -26,7 +26,6 @@ public class MoneyMachine extends ElementarMachine<Float> implements Serializabl
         }
 
         Element<Float> x = new Element<>(n, f);
-        x.setCount(n);
         elements.add(x);
         totalValue += (n*f);
 
