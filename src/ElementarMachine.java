@@ -24,7 +24,6 @@ public class ElementarMachine<T> {
         }
 
         Element x = new Element<T>(n, thing);
-        x.setCount(n);
         elements.add(x);
 
     }
@@ -33,7 +32,8 @@ public class ElementarMachine<T> {
         for (int i = 0; i < elements.size(); i++) {
             if(elements.get(i).getThing() == thing){
                 int x = elements.get(i).getCount();
-                elements.get(i).setCount(x-1);
+                if ((elements.get(i).getCount() - 1) > 0)
+                    elements.get(i).setCount(x-1);
                 return true;
             }
         }

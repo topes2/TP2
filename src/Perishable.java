@@ -20,7 +20,7 @@ class Perishable extends Product implements Freshness {
 
     }
     @Override
-    boolean is_persihable() {
+    boolean is_perishable() {
         return true;
     }
 

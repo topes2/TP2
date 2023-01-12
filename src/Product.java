@@ -12,7 +12,7 @@ public abstract class Product {
         return name;
     }
 
-    abstract boolean is_persihable();
+    abstract boolean is_perishable();
 }
 
 

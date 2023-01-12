@@ -12,7 +12,7 @@ class NonPerishable extends Product{
         this.volume = volume;
     }
     @Override
-    boolean is_persihable() {
+    boolean is_perishable() {
         return false;
     }
 }

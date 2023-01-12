@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MoneyMachine extends ElementarMachine<Float> {
+public class MoneyMachine extends ElementarMachine<Float> implements Serializable {
 
     float totalValue;
 
@@ -24,7 +25,7 @@ public class MoneyMachine extends ElementarMachine<Float> {
             }
         }
 
-        Element x = new Element<Float>(n, f);
+        Element<Float> x = new Element<>(n, f);
         x.setCount(n);
         elements.add(x);
         totalValue += (n*f);

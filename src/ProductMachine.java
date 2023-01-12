@@ -1,5 +1,6 @@
+import java.io.Serializable;
 import java.util.ArrayList;
-public class ProductMachine extends ElementarMachine<Product> {
+public class ProductMachine extends ElementarMachine<Product> implements Serializable {
 
 
     public ProductMachine(){
@@ -9,20 +10,20 @@ public class ProductMachine extends ElementarMachine<Product> {
     public void addProduct(int n, Product p){
 
        for (int i = 0; i < elements.size(); i++) {
-            if(elements.get(i).getThing().getName() == p.getName()){
+            if(elements.get(i).getThing().getName().equals(p.getName())){
                 int x = elements.get(i).getCount();
                 elements.get(i).setCount(x+n);
                 return;
             }
         }
 
-        Element x = new Element<Product>(n, p);
+        Element<Product> x = new Element<Product>(n, p);
         x.setCount(n);
         elements.add(x);
 
 
     }
-    public boolean hasProduct(Product p){
+    public boolean hasProduct(Product p){// ver se acount é maior que 0
 
         for (int i = 0; i < elements.size(); i++) {
             if(elements.get(i).getThing().getName().equals(p.getName())){
