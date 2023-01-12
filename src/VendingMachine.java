@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.ArrayList;
+@SuppressWarnings("unchecked")
 
 public class VendingMachine {
     static MoneyMachine m;
@@ -14,8 +16,9 @@ public class VendingMachine {
         file.createNewFile();
         FileOutputStream outFileStream = new FileOutputStream(file);
         ObjectOutputStream outObjectStream = new ObjectOutputStream(outFileStream);
-        outObjectStream.writeObject(m);
-        outObjectStream.writeObject(p);
+        outObjectStream.writeObject(VendingMachine.m);
+        outObjectStream.writeObject(VendingMachine.p);
+        outObjectStream.writeObject (VendingMachine.m.elements);
     }
 
     public static VendingMachine restoreMachine(String fname) throws IOException, ClassNotFoundException {
@@ -24,12 +27,13 @@ public class VendingMachine {
         ObjectInputStream inObjectStream = new ObjectInputStream(inFileStream);
         MoneyMachine mm = (MoneyMachine) inObjectStream.readObject();
         ProductMachine pm = (ProductMachine) inObjectStream.readObject();
+        mm.elements = (ArrayList<Element<Float>>)  inObjectStream.readObject( );
         VendingMachine vm = new VendingMachine(pm,mm);
         return vm;
     }
 
     public ProductMachine getProductMachine(){
-        return p;
+        return VendingMachine.p;
     }
 
     public void setProductMachine(ProductMachine p){
@@ -37,7 +41,7 @@ public class VendingMachine {
     }
 
     public MoneyMachine getMoneyMachine(){
-        return m;
+        return VendingMachine.m;
     }
 
     public void setMoneyMachine(MoneyMachine m){
