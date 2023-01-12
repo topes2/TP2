@@ -2,9 +2,9 @@ import java.util.Date;
 
 @SuppressWarnings("unchecked")
 public abstract class Product {
-    public String name;
+    String name;
     double cost;
-    double getvalue(){
+    public double getCost(){
         return cost;
     }
 

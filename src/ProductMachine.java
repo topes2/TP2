@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 public class ProductMachine extends ElementarMachine<Product> {
 
 
@@ -24,11 +23,43 @@ public class ProductMachine extends ElementarMachine<Product> {
     public boolean hasProduct(Product p){
 
         for (int i = 0; i < elements.size(); i++) {
-            if(elements.get(i).getThing().getName() == p.getName()){
+            if(elements.get(i).getThing().getName().equals(p.getName())){
                 return true;
             }
         }
         return false;
     }
-    public void listAllOrdered( ){}
+
+    public void sortProducts(){
+
+        Element<Product> temp, temp2;
+        int  bottom, i;
+        boolean exchanged = true;
+        bottom = elements.size() - 2;
+        while (exchanged) {
+            exchanged = false;
+            for (i = 0; i <= bottom; i++) {
+                if (elements.get(i).getThing().getCost() > elements.get(i+1).getThing().getCost())  {
+                    temp = elements.remove(i+1); // exchange
+                    temp2 = elements.remove(i);
+                    elements.add(i, temp);
+                    elements.add(i+1, temp2);
+                    exchanged = true; // exchange is made
+                }
+            }
+            bottom--;
+        }
+
+    }
+    public void listAllOrdered(){
+
+        sortProducts();
+
+        for ( Element<Product> x:
+             elements) {
+            System.out.println("Element [" + x.getThing().getClass().getSimpleName() + "=Product [name=" + x.getThing().getName() +
+                    ", cost=" + x.getThing().cost + "], count = " + x.getCount()+"]");
+        }
+
+    }
 }
