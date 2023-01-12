@@ -5,15 +5,17 @@ public class Main {
     public static void main(String[] args){
 
         try {
-            ProductMachine pm = new ProductMachine();
-            pm.addProduct(10, new Perishable("Milk", 10, new Date()));
-            pm.addProduct(10, new Perishable("Milk", 10, new Date()));
-            pm.addProduct(5, new NonPerishable("Lotion", 12.5, 3.4));
-            pm.addProduct(5, new NonPerishable("Shampoo", 5.5, 3.4));
-            pm.addProduct(5, new NonPerishable("Game", 7.5, 4.6));
-            pm.listAllOrdered();
+            MoneyMachine mm = new MoneyMachine();
+            mm.addThings(10, 2.0f);
+            mm.addThings(10, 0.5f);
+            mm.addThings(10, 1f);
+            mm.addThings(10, 0.5f);
+            mm.listAll();
+            System.out.println("Ordered");
+            System.out.println(mm.getTotalValue());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+
+            System.out.println("Exception");
         }
     }
 }

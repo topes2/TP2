@@ -8,7 +8,7 @@ public class ProductMachine extends ElementarMachine<Product> {
 
     public void addProduct(int n, Product p){
 
-        for (int i = 0; i < elements.size(); i++) {
+       for (int i = 0; i < elements.size(); i++) {
             if(elements.get(i).getThing().getName() == p.getName()){
                 int x = elements.get(i).getCount();
                 elements.get(i).setCount(x+n);
@@ -19,6 +19,8 @@ public class ProductMachine extends ElementarMachine<Product> {
         Element x = new Element<Product>(n, p);
         x.setCount(n);
         elements.add(x);
+
+
     }
     public boolean hasProduct(Product p){
 
