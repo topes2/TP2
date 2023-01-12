@@ -13,7 +13,7 @@ public class MoneyMachine extends ElementarMachine<Float> {
         return totalValue;
     }
 
-    public void addThings(int n, float f){
+    public void addThings(int n, Float f){
 
         for (int i = 0; i < elements.size(); i++) {
             if(Float.toString(elements.get(i).getThing()).equals(Float.toString(f)) ){
@@ -24,8 +24,7 @@ public class MoneyMachine extends ElementarMachine<Float> {
             }
         }
 
-        Element x = new Element<Float>(n, f);
-        x.setCount(n);
+        Element<Float> x = new Element<>(n, f);
         elements.add(x);
         totalValue += (n*f);
 

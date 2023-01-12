@@ -24,7 +24,6 @@ public class ElementarMachine<T> {
         }
 
         Element x = new Element<T>(n, thing);
-        x.setCount(n);
         elements.add(x);
 
     }
