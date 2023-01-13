@@ -60,8 +60,8 @@ public class ProductMachine extends ElementarMachine<Product> implements Seriali
 
         for ( Element<Product> x:
              elements) {
-            System.out.println("Element [" + x.getThing().getClass().getSimpleName() + "=Product [name=" + x.getThing().getName() +
-                    ", cost=" + x.getThing().cost + "], count = " + x.getCount()+"]");
+            System.out.println("Element [" + x.getThing().getClass().getSimpleName() + " =Product [name= " + x.getThing().getName() +
+                    ", cost= " + x.getThing().cost + "], count = " + x.getCount()+"]");
         }
 
     }

@@ -13,6 +13,14 @@ public abstract class Product {
     }
 
     abstract boolean is_perishable();
+
+    /**
+     * @return String
+     */
+    @Override
+    public String toString() {
+        return "Element [" + getClass().getSimpleName() + "=Product [name=" + getName() + ", cost=" + getCost() + "]";
+    }
 }
 
 
