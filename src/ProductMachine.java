@@ -54,9 +54,7 @@ public class ProductMachine extends ElementarMachine<Product> implements Seriali
         }
 
     }
-    public void listAllOrdered(){
-
-        sortProducts();
+    public void listAll(){
 
         for ( Element<Product> x:
              elements) {
@@ -64,5 +62,10 @@ public class ProductMachine extends ElementarMachine<Product> implements Seriali
                     ", cost= " + x.getThing().cost + "], count = " + x.getCount()+"]");
         }
 
+    }
+
+    public void listAllOrdered(){
+        sortProducts();
+        listAll();
     }
 }

@@ -19,7 +19,7 @@ public class MoneyMachine extends ElementarMachine<Float> implements Serializabl
         totalValue = valuetoadd;
     }
 
-    public void addThings(int n, Float f){
+    public void addThings(int n, float f){
 
         for (int i = 0; i < elements.size(); i++) {
             if(Float.toString(elements.get(i).getThing()).equals(Float.toString(f)) ){
