@@ -23,7 +23,7 @@ public class ProductMachine extends ElementarMachine<Product> implements Seriali
 
 
     }
-    public boolean hasProduct(Product p){// ver se acount é maior que 0
+    public boolean hasProduct(Product p){
 
         for (int i = 0; i < elements.size(); i++) {
             if(elements.get(i).getThing().getName().equals(p.getName())){
@@ -31,6 +31,15 @@ public class ProductMachine extends ElementarMachine<Product> implements Seriali
             }
         }
         return false;
+    }
+
+    public Product GetProduct(String name){
+        for (int i = 0; i < elements.size(); i++) {
+            if (elements.get(i).getThing().getName().equals(name)) {
+                return elements.get(i).getThing();
+            }
+        }
+        return null;
     }
 
     public void sortProducts(){

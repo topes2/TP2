@@ -1,12 +1,10 @@
 public class CoinBuffer {
     public int[] count;
 
-    enum coins{CENT10, CENT20, CENT50, EURO1, EURO2};
-
     public CoinBuffer(){
     }
 
-    public float sync(){
+    public float totalbag(){
         //add o valor de cada moeda
         float total = 0 + count[0]*.10f + count[1]*.20f+ count[2]*.50f + count[3]*1f + count[4]*2f;
         return total;
@@ -29,6 +27,12 @@ public class CoinBuffer {
             case "2":
                 count[4] +=n;
                 break;
+        }
+    }
+
+    public void reset(){
+        for(int i = 0; i <= 5;i++){
+            count[i] = 0;
         }
     }
 

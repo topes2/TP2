@@ -16,7 +16,7 @@ public class MoneyMachine extends ElementarMachine<Float> implements Serializabl
     }
 
     public void addToTotal(float valuetoadd){
-        totalValue = valuetoadd;
+        totalValue =+ valuetoadd;
     }
 
     public void addThings(int n, float f){
@@ -29,13 +29,11 @@ public class MoneyMachine extends ElementarMachine<Float> implements Serializabl
                 return;
             }
         }
-
         Element<Float> x = new Element<>(n, f);
         elements.add(x);
         totalValue += (n*f);
-
-
     }
+
     public void addMoney(int n, float f){
         addThings(n,f);
     }
