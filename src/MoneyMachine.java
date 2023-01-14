@@ -3,7 +3,8 @@ import java.util.ArrayList;
 
 public class MoneyMachine extends ElementarMachine<Float> implements Serializable {
 
-    float totalValue;
+    public float totalValue;
+
 
     public MoneyMachine(){
         elements = new ArrayList<>();
@@ -12,6 +13,10 @@ public class MoneyMachine extends ElementarMachine<Float> implements Serializabl
 
     public float getTotalValue() {
         return totalValue;
+    }
+
+    public void addToTotal(float valuetoadd){
+        totalValue = valuetoadd;
     }
 
     public void addThings(int n, Float f){
@@ -31,7 +36,6 @@ public class MoneyMachine extends ElementarMachine<Float> implements Serializabl
 
 
     }
-
     public void addMoney(int n, float f){
         addThings(n,f);
     }
