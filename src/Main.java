@@ -6,25 +6,37 @@ import java.text.SimpleDateFormat;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+
         SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
         DecimalFormat df = new DecimalFormat("0.00");
+        Scanner sc = new Scanner(System.in);
+        VendingMachine vm;
 
-        ProductMachine pm = new ProductMachine();
-        pm.addProduct(10, new Perishable("gomas", (float)1.25 , sdformat.parse("2022-02-13")));
-        pm.addProduct(10, new Perishable("batatas", (float)1.60 , sdformat.parse("2022-11-27")));
-        pm.addProduct(10, new Perishable("merenda mista", (float)1.25 , sdformat.parse("2022-01-25")));
-        pm.addProduct(10, new NonPerishable("pastilhas", (float) 0.95,0.075));
 
-        MoneyMachine mm = new MoneyMachine();
+        System.out.println("[Restore Vendig Machinhe from file?]");
+        if (sc.nextLine().equals("s")){
+            System.out.print("[Enter file name:");
+            vm = VendingMachine.restoreMachine(sc.nextLine());
+        }
+        else {
 
-        mm.addThings(10,1);
-        mm.addThings(10,(float)0.1);
-        mm.addThings(10,(float)0.2);
-        mm.addThings(10,(float)0.5);
-        mm.addThings(10,(float)0.05);
-        mm.addThings(10,2);
+            ProductMachine pm = new ProductMachine();
+            pm.addProduct(10, new Perishable("gomas", (float) 1.25, sdformat.parse("2022-02-13")));
+            pm.addProduct(10, new Perishable("batatas", (float) 1.60, sdformat.parse("2022-11-27")));
+            pm.addProduct(10, new Perishable("merenda mista", (float) 1.25, sdformat.parse("2022-01-25")));
+            pm.addProduct(10, new NonPerishable("pastilhas", (float) 0.95, 0.075));
 
-        VendingMachine vm1 = new VendingMachine(pm,mm);
+            MoneyMachine mm = new MoneyMachine();
+
+            mm.addThings(10, 1);
+            mm.addThings(10, (float) 0.1);
+            mm.addThings(10, (float) 0.2);
+            mm.addThings(10, (float) 0.5);
+            mm.addThings(10, (float) 0.05);
+            mm.addThings(10, 2);
+
+            vm = new VendingMachine(pm, mm);
+        }
 
         System.out.println("""
                 //////////////////////////////////////////////
@@ -42,93 +54,46 @@ public class Main {
 
 
         while (true) {
-            Scanner sc = new Scanner(System.in);
-            vm1.getProductMachine().listForClient();
 
-                while (true) {
-                    System.out.println("[Saldo:" + df.format(mm.getCb().getSaldo()) + "€]");
-                    String input = sc.nextLine();
-                    try {
-                        float mon = Float.parseFloat(input);
-                        mm.getCb().AddCoin(mon, 1);
-                    } catch (Exception e) {
+            vm.getProductMachine().listForClient();
 
+            while (true) {
+                System.out.println("[Saldo:" + df.format(vm.getMoneyMachine().getCb().getSaldo()) + "€]");
+                String input = sc.nextLine();
 
-                        if (input.equals("sudo")) {
+                try {
+                    float mon = Float.parseFloat(input);
+                    vm.getMoneyMachine().getCb().AddCoin(mon, 1);
+                } catch (Exception e) {
 
-                            boolean quit = false;
-                            while (!quit) {
+                    switch (input) {
 
-                                try {
-                                    String comand = sc.nextLine();
-                                    switch (comand) {
-                                        case "seeTotal" -> System.out.println(df.format(vm1.getMoneyMachine().getTotalValue()));
-                                        case "seeMoneyToCollect" -> System.out.println(df.format(vm1.getMoneyMachine().MoneyToCollect()));
-                                        case "seeMoney" -> vm1.getMoneyMachine().listAll();
-                                        case "addMoney" -> vm1.getMoneyMachine().addThings(sc.nextInt(), sc.nextFloat());
-                                        case "addPerishable" -> {
-                                            int qtd = sc.nextInt();
-                                            sc.nextLine();
-                                            String nome = sc.nextLine();
-                                            float cost = sc.nextFloat();
-                                            sc.nextLine();
-                                            Date limitdate = sdformat.parse(sc.nextLine());
-                                            Perishable product = new Perishable(nome, cost, limitdate);
-                                            vm1.getProductMachine().addProduct( qtd , product);
-                                            }
-                                        case "addNonPerishable" -> {
-                                            int qtd = sc.nextInt();
-                                            sc.nextLine();
-                                            String nome = sc.nextLine();
-                                            float cost = sc.nextFloat();
-                                            double volume = sc.nextDouble();
-                                            NonPerishable product = new NonPerishable(nome, cost,volume);
-                                            vm1.getProductMachine().addProduct( qtd , product);
-                                        }
-                                        case "productList" -> vm1.getProductMachine().listAllOrdered();
-                                        case "saveMachine" -> VendingMachine.saveMachine(vm1, sc.nextLine());
-                                        case "loadMachine" -> vm1 = VendingMachine.restoreMachine(sc.nextLine());
-                                        case "Q" -> quit = true;
-                                        case "shutDown" -> {
-                                            return;
-                                        }
-
-
-                                    }
-                                }catch (Exception x){
-                                    System.out.println(x.getMessage());
-                                }
-                            }
-
-                        }
-                        else if (input.equals("cancelar")) {
-                            mm.giveChange(0);
+                        case "sudo":
+                            vm.adminMode();
                             break;
-                        }
-
-                        if (pm.hasProduct(pm.GetProduct(input))) {
-
-                            Product p1 = pm.GetProduct(input);
-                            if (mm.getCb().getSaldo() >= p1.getCost()) {
-                                mm.giveChange((float) p1.getCost());
-                                System.out.println("Parabens compraste " + p1.getName() + "\n\n\n");
-                                pm.removeOneThing(p1);
-                                break;
-                            }
-                            else{
-                                System.out.println("Saldo insuficinte");
-                            }
-                        }else
-                        {
-                            System.out.println("Produto em falta");
-                        }
-
-
+                        case "saveMachine":
+                            VendingMachine.saveMachine(vm, sc.nextLine());
+                            break;
+                        case "loadMachine":
+                            vm = VendingMachine.restoreMachine(sc.nextLine());
+                            break;
+                        case "shutDown" :
+                            System.out.println("Shuting Down...");
+                            return;
+                        case "cancelar":
+                            vm.getMoneyMachine().giveChange(0);
+                            break;
+                        default:
+                            vm.requestProduct(input);
+                            break;
                     }
                 }
+
             }
         }
     }
+}
+
 
 
 

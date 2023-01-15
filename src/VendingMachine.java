@@ -1,14 +1,19 @@
 import java.io.*;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Scanner;
+
 @SuppressWarnings("unchecked")
 
 public class VendingMachine {
-    static MoneyMachine m;
-    static ProductMachine p;
+    private static MoneyMachine mm;
+    private static ProductMachine pm;
 
     public VendingMachine( ProductMachine p, MoneyMachine m){
-        VendingMachine.m = m;
-        VendingMachine.p = p;
+        VendingMachine.mm = m;
+        VendingMachine.pm = p;
     }
 
     public static void saveMachine(VendingMachine vm, String fname) throws IOException {
@@ -16,10 +21,10 @@ public class VendingMachine {
         if(file.createNewFile()) {
             FileOutputStream outFileStream = new FileOutputStream(file);
             ObjectOutputStream outObjectStream = new ObjectOutputStream(outFileStream);
-            outObjectStream.writeObject(VendingMachine.m);
-            outObjectStream.writeObject(VendingMachine.p);
-            outObjectStream.writeObject(VendingMachine.m.elements);
-            outObjectStream.writeObject(VendingMachine.p.elements);
+            outObjectStream.writeObject(VendingMachine.mm);
+            outObjectStream.writeObject(VendingMachine.pm);
+            outObjectStream.writeObject(VendingMachine.mm.elements);
+            outObjectStream.writeObject(VendingMachine.pm.elements);
         }
 
     }
@@ -37,18 +42,90 @@ public class VendingMachine {
     }
 
     public ProductMachine getProductMachine(){
-        return VendingMachine.p;
+        return VendingMachine.pm;
     }
 
     public void setProductMachine(ProductMachine p){
-        VendingMachine.p = p;
+        VendingMachine.pm = p;
     }
 
     public MoneyMachine getMoneyMachine(){
-        return VendingMachine.m;
+        return VendingMachine.mm;
     }
 
     public void setMoneyMachine(MoneyMachine m){
-        VendingMachine.m = m;
+        VendingMachine.mm = m;
+    }
+
+    public Product requestProduct(String input){
+
+        if (pm.hasProduct(pm.GetProduct(input))) {
+
+            Product p1 = pm.GetProduct(input);
+            if (mm.getCb().getSaldo() >= p1.getCost()) {
+                mm.giveChange((float) p1.getCost());
+                System.out.println("Parabens compraste " + p1.getName() + "\n\n\n");
+                pm.removeOneThing(p1);
+                return p1;
+            }
+            else{
+                System.out.println("Saldo insuficinte");
+            }
+        }else
+        {
+            System.out.println("Produto em falta");
+        }
+
+        return null;
+    }
+
+    public void adminMode() {
+
+        Scanner sc = new Scanner(System.in);
+        SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        System.out.println("[-------------Entering Admim Mode-------------]");
+
+        while (true) {
+
+            try {
+                String comand = sc.nextLine();
+                switch (comand) {
+                    case "seeTotal" -> System.out.println(df.format(mm.getTotalValue()));
+                    case "seeMoneyToCollect" -> System.out.println(df.format(mm.MoneyToCollect()));
+                    case "seeMoney" -> mm.listAll();
+                    case "addMoney" -> mm.addThings(sc.nextInt(), sc.nextFloat());
+                    case "addPerishable" -> {
+                        int qtd = sc.nextInt();
+                        sc.nextLine();
+                        String nome = sc.nextLine();
+                        float cost = sc.nextFloat();
+                        sc.nextLine();
+                        Date limitdate = sdformat.parse(sc.nextLine());
+                        Perishable product = new Perishable(nome, cost, limitdate);
+                        pm.addProduct(qtd, product);
+                    }
+                    case "addNonPerishable" -> {
+                        int qtd = sc.nextInt();
+                        sc.nextLine();
+                        String nome = sc.nextLine();
+                        float cost = sc.nextFloat();
+                        double volume = sc.nextDouble();
+                        NonPerishable product = new NonPerishable(nome, cost, volume);
+                        pm.addProduct(qtd, product);
+                    }
+                    case "productList" -> pm.listAllOrdered();
+                    case "Q" -> {
+                        System.out.println("[--------------Leaving Admim Mode-------------]");
+                        return;
+                    }
+
+                }
+            } catch (Exception x) {
+                System.out.println(x.getMessage());
+            }
+
+        }
     }
 }

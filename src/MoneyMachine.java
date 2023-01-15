@@ -28,7 +28,7 @@ public class MoneyMachine extends ElementarMachine<Float> implements Serializabl
 
         if(cost > 0) {
 
-            float troco = cb.getSaldo() - cost;
+            float troco = troco1;
             cb.reset();
             while (!dc.format(troco).equals("0.00")){
                 for (Element<Float> x: elements) {

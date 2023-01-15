@@ -18,15 +18,25 @@ public class CoinBuffer implements Serializable {
         DecimalFormat dc = new DecimalFormat("0.00");
 
         switch (dc.format(value)) {
-            case "0.05" -> moedas[0] += n;
-            case "0.10" -> moedas[1] += n;
-            case "0.20" -> moedas[2] += n;
-            case "0.50" -> moedas[3] += n;
-            case "1.00" -> moedas[4] += n;
-            case "2.00" -> moedas[5] += n;
-            default -> {
-                return;
-            }
+            case "0.05" :
+                moedas[0] += n;
+                break;
+            case "0.10" :
+                moedas[1] += n;
+                break;
+            case "0.20" :
+                moedas[2] += n;
+                break;
+            case "0.50" :
+                moedas[3] += n;
+                break;
+            case "1.00" :
+                moedas[4] += n;
+                break;
+            case "2.00" :
+                moedas[5] += n;
+                break;
+            default : return;
         }
 
         saldo += (value *n);
@@ -47,7 +57,7 @@ public class CoinBuffer implements Serializable {
                             "[0.2€:" + moedas[2]+ "] "  +
                             "[0.5€:" + moedas[3]+ "] " +
                             "[1.0€:" + moedas[4]+ "] " +
-                            "[2.0€:" + moedas[3]+ "] ]" );
+                            "[2.0€:" + moedas[5]+ "] ]" );
     }
 }
 
