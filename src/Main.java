@@ -1,46 +1,120 @@
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.Scanner;
+import java.text.SimpleDateFormat;
 
 public class Main {
 
-    public static void main(String[] args){
-        ProductMachine pm = new ProductMachine();
-        pm.addProduct(10,new NonPerishable("lube",10,13.2));
-        pm.addProduct(10,new NonPerishable("goo",10,13.2));
-        pm.addProduct(10,new NonPerishable("pixel7",10,13.2));
-        pm.addProduct(10,new Perishable("cake",1.7f,new Date()));
-        pm.addProduct(10,new Perishable("weed",1.8f,new Date()));
-        pm.addProduct(10,new Perishable("foam",1.2f,new Date()));
-        MoneyMachine mm = new MoneyMachine();
-        VendingMachine vm1 = new VendingMachine(pm, mm);
-        while (true){
-            CoinBuffer CB = new CoinBuffer();
-            Scanner sc = new Scanner(System.in);
-            vm1.getProductMachine().listAll();
-            System.out.println("Deseja efetar uma compra? \nSim     Não");
-            String temp = sc.nextLine().toUpperCase();
+    public static void main(String[] args) throws Exception {
+        SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+        DecimalFormat df = new DecimalFormat("0.00");
+        VendingMachine vm1 = VendingMachine.restoreMachine("test.dat");
+        MoneyMachine mm = vm1.getMoneyMachine();
+        ProductMachine pm = vm1.getProductMachine();
 
-            if(temp.equals("SIM")){ //TODO: O Loop esta mais ou menos com a framework feita mas de resto tens de acabar a parte de fazer return de um product tipo o proximo todo
-                while(true){
+        System.out.println("""
+                //////////////////////////////////////////////
+                |               Instruões                    |
+                |Intoduza o saldo                            |
+                |Introduza o nome do produto desejado        |
+                |Se desejar canselar a operaçao digite       |
+                |cancelar                                    |
+                |                                            |
+                |Moedas aceites: 0.05€ , 0.10€ , 0.20€,      |
+                |0.50€ , 1€ , 2€                             |
+                //////////////////////////////////////////////
+                """);
+
+
+
+        while (true) {
+            Scanner sc = new Scanner(System.in);
+            vm1.getProductMachine().listForClient();
+            System.out.println("Moedas aceites: 0.05€ , 0.10€ , 0.20€ , 0.50€ , 1€ , 2€");
+
+                while (true) {
+                    System.out.println("[Saldo:" + df.format(mm.getCb().getSaldo()) + "€]");
                     String input = sc.nextLine();
-                    try{
+                    try {
                         float mon = Float.parseFloat(input);
-                        CB.AddCoin(mon,1);
-                    }catch (Exception e){
-                        if( pm.hasProduct(pm.GetProduct(input))){ // TODO:nao esta a devolver um producto na parte de getProduct e nao da para poder usar o elements
-                            Product p1 = pm.GetProduct(input);
-                            if(CB.totalbag() == p1.getCost()){
-                                System.out.println("Parabens compraste "+ p1.getName());
-                                pm.removeOneThing(p1);
+                        mm.getCb().AddCoin(mon, 1);
+                    } catch (Exception e) {
+
+
+                        if (input.equals("sudo")) {
+
+                            boolean quit = false;
+                            while (!quit) {
+
+                                try {
+                                    String comand = sc.nextLine();
+                                    switch (comand) {
+                                        case "seeMoney" -> vm1.getMoneyMachine().listAll();
+                                        case "addMoney" -> vm1.getMoneyMachine().addThings(sc.nextInt(), sc.nextFloat());
+                                        case "addPerishable" -> {
+                                            int qtd = sc.nextInt();
+                                            sc.nextLine();
+                                            String nome = sc.nextLine();
+                                            float cost = sc.nextFloat();
+                                            sc.nextLine();
+                                            Date limitdate = sdformat.parse(sc.nextLine());
+                                            Perishable product = new Perishable(nome, cost, limitdate);
+                                            vm1.getProductMachine().addProduct( qtd , product);
+                                            }
+                                        case "addNonPerishable" -> {
+                                            int qtd = sc.nextInt();
+                                            sc.nextLine();
+                                            String nome = sc.nextLine();
+                                            double cost = sc.nextDouble();
+                                            double volume = sc.nextDouble();
+                                            NonPerishable product = new NonPerishable(nome, cost,volume);
+                                            vm1.getProductMachine().addProduct( qtd , product);
+                                        }
+                                        case "productList" -> vm1.getProductMachine().listAllOrdered();
+                                        case "saveMachine" -> VendingMachine.saveMachine(vm1, sc.nextLine());
+                                        case "loadMachine" -> vm1 = VendingMachine.restoreMachine(sc.nextLine());
+                                        case "Q" -> quit = true;
+                                        case "shutDown" -> {
+                                            return;
+                                        }
+
+
+                                    }
+                                }catch (Exception x){
+                                    System.out.println(x.getMessage());
+                                }
                             }
+
                         }
+                        else if (input.equals("cancelar")) {
+                            mm.giveChange(0);
+                            break;
+                        }
+
+                        if (pm.hasProduct(pm.GetProduct(input))) {
+
+                            Product p1 = pm.GetProduct(input);
+                            if (mm.getCb().getSaldo() >= p1.getCost()) {
+                                mm.giveChange((float) p1.getCost());
+                                System.out.println("Parabens compraste " + p1.getName() + "\n\n\n");
+                                pm.removeOneThing(p1);
+                                break;
+                            }
+                            else{
+                                System.out.println("Saldo insuficinte");
+                            }
+                        }else
+                        {
+                            System.out.println("Produto em falta");
+                        }
+
 
                     }
                 }
             }
-            CB.reset();
         }
     }
-}
+
+
 
 

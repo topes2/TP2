@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-class Perishable extends Product implements Freshness {
+class Perishable extends Product implements Freshness, Serializable {
     Date limitDate;
     Date dayAdded;
     public Perishable(String name,float cost,  Date limitDate) {

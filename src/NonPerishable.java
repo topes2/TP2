@@ -1,6 +1,7 @@
+import java.io.Serializable;
 
 @SuppressWarnings("unchecked")
-class NonPerishable extends Product{
+class NonPerishable extends Product implements Serializable {
     double volume;
     double getVolume(){
 

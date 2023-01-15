@@ -18,7 +18,9 @@ public class VendingMachine {
         ObjectOutputStream outObjectStream = new ObjectOutputStream(outFileStream);
         outObjectStream.writeObject(VendingMachine.m);
         outObjectStream.writeObject(VendingMachine.p);
-        outObjectStream.writeObject (VendingMachine.m.elements);
+        outObjectStream.writeObject(VendingMachine.m.elements);
+        outObjectStream.writeObject(VendingMachine.p.elements);
+
     }
 
     public static VendingMachine restoreMachine(String fname) throws IOException, ClassNotFoundException {
@@ -27,7 +29,8 @@ public class VendingMachine {
         ObjectInputStream inObjectStream = new ObjectInputStream(inFileStream);
         MoneyMachine mm = (MoneyMachine) inObjectStream.readObject();
         ProductMachine pm = (ProductMachine) inObjectStream.readObject();
-        mm.elements = (ArrayList<Element<Float>>)  inObjectStream.readObject( );
+        mm.elements = (ArrayList<Element<Float>>)  inObjectStream.readObject();
+        pm.elements = (ArrayList<Element<Product>>) inObjectStream.readObject();
         VendingMachine vm = new VendingMachine(pm,mm);
         return vm;
     }
