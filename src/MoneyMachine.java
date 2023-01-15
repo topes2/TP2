@@ -22,20 +22,18 @@ public class MoneyMachine extends ElementarMachine<Float> implements Serializabl
    public void giveChange(float cost){
         sortCoins();
         DecimalFormat dc = new DecimalFormat("0.00");
-        totalValue += cb.getSaldo();
-        float troco1 = cb.getSaldo() - cost;
-        System.out.println("                       [Troco:"+Float.parseFloat(dc.format(troco1)) + "€]");
+        float troco = cb.getSaldo() - cost;
+        System.out.println("                       [Troco:"+Float.parseFloat(dc.format(troco)) + "€]");
 
         if(cost > 0) {
-
-            float troco = troco1;
+            totalValue += cb.getSaldo();
             cb.reset();
             while (!dc.format(troco).equals("0.00")){
                 for (Element<Float> x: elements) {
                     if (troco - x.getThing() >= 0 && removeOneThing(x.getThing()) ){
                         troco -= x.getThing();
-                        addToTotal(-(x.getThing()));
                         cb.AddCoin(x.getThing(), 1);
+                        addToTotal(-(x.getThing()));
                         troco = Float.parseFloat(dc.format(troco));
                         break;
                     }

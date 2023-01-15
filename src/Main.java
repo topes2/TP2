@@ -13,7 +13,7 @@ public class Main {
         VendingMachine vm;
 
 
-        System.out.println("[Restore Vendig Machinhe from file?]");
+        System.out.println("[Restore Vending Machinhe from file?]");
         if (sc.nextLine().equals("s")){
             System.out.print("[Enter file name:");
             vm = VendingMachine.restoreMachine(sc.nextLine());
@@ -27,7 +27,6 @@ public class Main {
             pm.addProduct(10, new NonPerishable("pastilhas", (float) 0.95, 0.075));
 
             MoneyMachine mm = new MoneyMachine();
-
             mm.addThings(10, 1);
             mm.addThings(10, (float) 0.1);
             mm.addThings(10, (float) 0.2);
