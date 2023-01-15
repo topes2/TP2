@@ -10,18 +10,17 @@ public class ProductMachine extends ElementarMachine<Product> implements Seriali
 
     public void addProduct(int n, Product p){
 
-       for (int i = 0; i < elements.size(); i++) {
-            if(elements.get(i).getThing().getName().equals(p.getName())){
-                int x = elements.get(i).getCount();
-                elements.get(i).setCount(x+n);
+        for (Element<Product> element : elements) {
+            if (element.getThing().getName().equals(p.getName())) {
+                int x = element.getCount();
+                element.setCount(x + n);
                 return;
             }
         }
 
-        Element<Product> x = new Element<Product>(n, p);
+        Element<Product> x = new Element<>(n, p);
         x.setCount(n);
         elements.add(x);
-
 
     }
     public boolean hasProduct(Product p){

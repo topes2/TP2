@@ -13,13 +13,14 @@ public class VendingMachine {
 
     public static void saveMachine(VendingMachine vm, String fname) throws IOException {
         File file = new File(fname);
-        file.createNewFile();
-        FileOutputStream outFileStream = new FileOutputStream(file);
-        ObjectOutputStream outObjectStream = new ObjectOutputStream(outFileStream);
-        outObjectStream.writeObject(VendingMachine.m);
-        outObjectStream.writeObject(VendingMachine.p);
-        outObjectStream.writeObject(VendingMachine.m.elements);
-        outObjectStream.writeObject(VendingMachine.p.elements);
+        if(file.createNewFile()) {
+            FileOutputStream outFileStream = new FileOutputStream(file);
+            ObjectOutputStream outObjectStream = new ObjectOutputStream(outFileStream);
+            outObjectStream.writeObject(VendingMachine.m);
+            outObjectStream.writeObject(VendingMachine.p);
+            outObjectStream.writeObject(VendingMachine.m.elements);
+            outObjectStream.writeObject(VendingMachine.p.elements);
+        }
 
     }
 
@@ -31,8 +32,8 @@ public class VendingMachine {
         ProductMachine pm = (ProductMachine) inObjectStream.readObject();
         mm.elements = (ArrayList<Element<Float>>)  inObjectStream.readObject();
         pm.elements = (ArrayList<Element<Product>>) inObjectStream.readObject();
-        VendingMachine vm = new VendingMachine(pm,mm);
-        return vm;
+        return new VendingMachine(pm,mm);
+
     }
 
     public ProductMachine getProductMachine(){
