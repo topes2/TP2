@@ -16,14 +16,15 @@ public class MoneyMachine extends ElementarMachine<Float> implements Serializabl
     }
 
     public CoinBuffer getCb(){
-        return cb;
+    return cb;
     };
 
-   public float giveChange(float cost){
+   public void giveChange(float cost){
         sortCoins();
         DecimalFormat dc = new DecimalFormat("0.00");
+        totalValue += cb.getSaldo();
         float troco1 = cb.getSaldo() - cost;
-        System.out.println("O troco é " +dc.format(troco1)+  "€" );
+        System.out.println("                       [Troco:"+Float.parseFloat(dc.format(troco1)) + "€]");
 
         if(cost > 0) {
 
@@ -33,8 +34,8 @@ public class MoneyMachine extends ElementarMachine<Float> implements Serializabl
                 for (Element<Float> x: elements) {
                     if (troco - x.getThing() >= 0 && removeOneThing(x.getThing()) ){
                         troco -= x.getThing();
+                        addToTotal(-(x.getThing()));
                         cb.AddCoin(x.getThing(), 1);
-
                         troco = Float.parseFloat(dc.format(troco));
                         break;
                     }
@@ -42,60 +43,69 @@ public class MoneyMachine extends ElementarMachine<Float> implements Serializabl
             }
         }
 
+
         cb.listAll();
         cb.reset();
-        return Float.parseFloat(dc.format(troco1));
+   }
 
-    }
+   public float MoneyToCollect(){
 
+        float moneyToChange=0;
+
+       for (Element<Float> element: elements) {
+           moneyToChange += (element.getCount() * element.getThing());
+       }
+
+       return totalValue - moneyToChange;
+   }
 
     public float getTotalValue() {
-        return totalValue;
+    return totalValue;
     }
 
     public void addToTotal(float valuetoadd){
-        totalValue =+ valuetoadd;
+    totalValue += valuetoadd;
     }
 
     public void sortCoins(){
 
-        Element<Float> temp, temp2;
-        int  bottom, i;
-        boolean exchanged = true;
-        bottom = elements.size() - 2;
-        while (exchanged) {
-            exchanged = false;
-            for (i = 0; i <= bottom; i++) {
-                if (elements.get(i).getThing() < elements.get(i+1).getThing())  {
-                    temp = elements.remove(i+1); // exchange
-                    temp2 = elements.remove(i);
-                    elements.add(i, temp);
-                    elements.add(i+1, temp2);
-                    exchanged = true; // exchange is made
-                }
+    Element<Float> temp, temp2;
+    int  bottom, i;
+    boolean exchanged = true;
+    bottom = elements.size() - 2;
+    while (exchanged) {
+        exchanged = false;
+        for (i = 0; i <= bottom; i++) {
+            if (elements.get(i).getThing() < elements.get(i+1).getThing())  {
+                temp = elements.remove(i+1); // exchange
+                temp2 = elements.remove(i);
+                elements.add(i, temp);
+                elements.add(i+1, temp2);
+                exchanged = true; // exchange is made
             }
-            bottom--;
         }
+        bottom--;
+    }
 
     }
 
     public void addThings(int n, float f){
 
-        for (int i = 0; i < elements.size(); i++) {
-            if(Float.toString(elements.get(i).getThing()).equals(Float.toString(f)) ){
-                int x = elements.get(i).getCount();
-                elements.get(i).setCount(x+n);
-                totalValue += (n*f);
+        for (Element<Float> element : elements) {
+            if (Float.toString(element.getThing()).equals(Float.toString(f))) {
+                int x = element.getCount();
+                element.setCount(x + n);
+                totalValue += (n * f);
                 return;
             }
         }
-        Element<Float> x = new Element<>(0, f);
-        elements.add(x);
-        addThings(n,f);
+    Element<Float> x = new Element<>(0, f);
+    elements.add(x);
+    addThings(n,f);
     }
 
     public void addMoney(int n, float f){
-        addThings(n,f);
+    addThings(n,f);
     }
 
 

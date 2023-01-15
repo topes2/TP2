@@ -8,9 +8,23 @@ public class Main {
     public static void main(String[] args) throws Exception {
         SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
         DecimalFormat df = new DecimalFormat("0.00");
-        VendingMachine vm1 = VendingMachine.restoreMachine("test.dat");
-        MoneyMachine mm = vm1.getMoneyMachine();
-        ProductMachine pm = vm1.getProductMachine();
+
+        ProductMachine pm = new ProductMachine();
+        pm.addProduct(10, new Perishable("gomas", (float)1.25 , sdformat.parse("2022-02-13")));
+        pm.addProduct(10, new Perishable("batatas", (float)1.60 , sdformat.parse("2022-11-27")));
+        pm.addProduct(10, new Perishable("merenda mista", (float)1.25 , sdformat.parse("2022-01-25")));
+        pm.addProduct(10, new NonPerishable("pastilhas", (float) 0.95,0.075));
+
+        MoneyMachine mm = new MoneyMachine();
+
+        mm.addThings(10,1);
+        mm.addThings(10,(float)0.1);
+        mm.addThings(10,(float)0.2);
+        mm.addThings(10,(float)0.5);
+        mm.addThings(10,(float)0.05);
+        mm.addThings(10,2);
+
+        VendingMachine vm1 = new VendingMachine(pm,mm);
 
         System.out.println("""
                 //////////////////////////////////////////////
@@ -30,7 +44,6 @@ public class Main {
         while (true) {
             Scanner sc = new Scanner(System.in);
             vm1.getProductMachine().listForClient();
-            System.out.println("Moedas aceites: 0.05€ , 0.10€ , 0.20€ , 0.50€ , 1€ , 2€");
 
                 while (true) {
                     System.out.println("[Saldo:" + df.format(mm.getCb().getSaldo()) + "€]");
@@ -49,6 +62,8 @@ public class Main {
                                 try {
                                     String comand = sc.nextLine();
                                     switch (comand) {
+                                        case "seeTotal" -> System.out.println(df.format(vm1.getMoneyMachine().getTotalValue()));
+                                        case "seeMoneyToCollect" -> System.out.println(df.format(vm1.getMoneyMachine().MoneyToCollect()));
                                         case "seeMoney" -> vm1.getMoneyMachine().listAll();
                                         case "addMoney" -> vm1.getMoneyMachine().addThings(sc.nextInt(), sc.nextFloat());
                                         case "addPerishable" -> {
@@ -65,7 +80,7 @@ public class Main {
                                             int qtd = sc.nextInt();
                                             sc.nextLine();
                                             String nome = sc.nextLine();
-                                            double cost = sc.nextDouble();
+                                            float cost = sc.nextFloat();
                                             double volume = sc.nextDouble();
                                             NonPerishable product = new NonPerishable(nome, cost,volume);
                                             vm1.getProductMachine().addProduct( qtd , product);

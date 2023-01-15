@@ -2,10 +2,10 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 
 public class CoinBuffer implements Serializable {
-    private int[] count;
+    private int[] moedas;
     private float saldo;
     public CoinBuffer(){
-        count = new int[6];
+        moedas = new int[6];
         saldo = 0;
     }
 
@@ -17,27 +17,16 @@ public class CoinBuffer implements Serializable {
 
         DecimalFormat dc = new DecimalFormat("0.00");
 
-        switch (dc.format(value)){
-            case "0.05":
-                count[0] += n;
-                break;
-            case "0.10":
-                count[1] += n;
-                break;
-            case "0.20":
-                count[2] += n;
-                break;
-            case "0.50":
-                count[3] += n;
-                break;
-            case "1.00":
-                count[4] += n;
-                break;
-            case "2.00":
-                count[5] +=n;
-                break;
-            default:
+        switch (dc.format(value)) {
+            case "0.05" -> moedas[0] += n;
+            case "0.10" -> moedas[1] += n;
+            case "0.20" -> moedas[2] += n;
+            case "0.50" -> moedas[3] += n;
+            case "1.00" -> moedas[4] += n;
+            case "2.00" -> moedas[5] += n;
+            default -> {
                 return;
+            }
         }
 
         saldo += (value *n);
@@ -46,20 +35,19 @@ public class CoinBuffer implements Serializable {
 
     public void reset(){
         for(int i = 0; i < 6;i++){
-            count[i] = 0;
+            moedas[i] = 0;
         }
         saldo = 0;
     }
 
 
-    public void listAll(){
-        System.out.println(
-                "Moedas de 0.05 euros "+ count[0] +
-                "\nMoedas de 0.10 euros "+ count[1] +
-                "\nMoedas de 0.20 euros " + count[2] +
-                "\nMoedas de 0.50 euros " + count[3] +
-                "\nMoedas de 1 euro " + count[4] +
-                "\nMoedas de 2 euros " + count[5]);
+    public void listAll() {
+        System.out.println( "[ [0.05€:"+ moedas[0]+"] " +
+                            "[0.1€:" + moedas[1]+ "] "  +
+                            "[0.2€:" + moedas[2]+ "] "  +
+                            "[0.5€:" + moedas[3]+ "] " +
+                            "[1.0€:" + moedas[4]+ "] " +
+                            "[2.0€:" + moedas[3]+ "] ]" );
     }
 }
 
