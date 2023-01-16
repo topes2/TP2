@@ -20,9 +20,9 @@ Em termos mais específicos o programa tem de conseguir lidar com os seguintes o
 - stock de produtos;
 - preço de cada produto;
 - produtos ditos perishable e nonperishable;
-- dinheiro dentro da maquina em si;
+- dinheiro dentro da máquina;
 - dinheiro dado pelo user para o pagamento;
-- devolver o troco para o user caso a compra aconteça ou não;.
+- devolver o troco para o user caso a compra aconteça ou não;
 
 
 Cada produto pode ser perishable ou nonperishable, um produto nonperishable não irá ter uma data de limite porem irá implementar o aspeto de volume. Enquanto o perishable lida com o ‘interface’ freshness e com o aspeto de data limite. 
@@ -46,20 +46,18 @@ Cada produto pode ser perishable ou nonperishable, um produto nonperishable não
 ```
 
 - ElementarMachine
-  - A super class para as subclasses ProductMachine e MoneyMachine, inclue a parte comom a ambas máquinas e necessarias para o funcionamento das varias. O contrutor inicia um arraylist de tipo T.
+  - A superclass para as subclasses ProductMachine e MoneyMachine, inclui a parte comum a ambas máquinas e necessárias para o funcionamento das várias. O construtor inicia um arraylist de tipo T.
 ```
   addThings
-  A função que é utilizada quando é preciso addicionar algum tipo de input para os arrays de cada maquina
+  A função que é utilizada quando é preciso addicionar algum tipo de input para os arrays de cada máquina
   seja um float no caso da MoneyMachine ou um Product para a ProductMachine. Recebe um int n, a quantidade para adicionar
-  e um objeto tipo T.
+  ,e um objeto tipo T.
 ```
 ```
   removeOneThing
   A função para remover um objeto ou diminuir o contador desse objeto dentro do array da maquina
 ```
-- Main
-```
-```
+
 - Product
   - Uma superclass para as classes de Perishable e NonPerishable contem as partes comums e basicas para ambas classes.
 
@@ -114,18 +112,27 @@ Cada produto pode ser perishable ou nonperishable, um produto nonperishable não
 ```
 ```
   restoreMachine
-  Lê o ficheiro especificado pelo user e le a MoneyMachine,ProductMachine e respetivos arrays guardados 
+  Lê o ficheiro especificado pelo user e lê a MoneyMachine,ProductMachine e respetivos arrays guardados 
   nesse mesmo ficheiro.
 ```
 ```
   adminMode
   Tomamos alguma liberdade creativa para poder aproximar este programa mais perto da realidade com um 
-  modo de admin, onde se tem acesso a adicionar produtos e remover, ver quanto dinheiro há na maquina
-  para se retirar e adicionar mais dinheiro.
+  modo de admin, onde se tem acesso a adicionar produtos, ver quanto dinheiro há na maquina
+  para se adicionar mais dinheiro.
+```
+
+```
+  workinkLoop
+  Onde juntamos todas as "peças" da nossa Vending Machine de forma a recebermos o pedido do cliente e 
+  a acedermos ás restantes funcionalidades da Vendig Machine como o adminMode e as funcionalidades de 
+  guardar e restaurar a máquina com ficheiros.
+  O nosso objetivo foi para criar, com base nos requisitos do decente, a maquina de distribuição mais realista que
+  conseguimos.
+  Devolve um Bollean para podermos terminhar a execução do main a partir de comandos
 ```
 - Main
-  - Onde criamos o loop principal do programa e onde é possivel a interação com o mesmo,
-  o nosso objetivo foi para criar, com base nos requisitos do decente, a maquina de distribuição mais realista que
-  conseguimos.
+  - Onde iniciamos a Vending Machinhe e também o que trata da chamada das funções de acesso a ficheiros
+  
 
 

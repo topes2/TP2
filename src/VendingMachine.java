@@ -41,6 +41,63 @@ public class VendingMachine {
 
     }
 
+    public boolean workinkLoop(){
+
+        DecimalFormat df = new DecimalFormat("0.00");
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println (    "##############################################\n"+
+                                "|               Instruões                    |\n" +
+                                "|Intoduza o saldo                            |\n"+
+                                "|Introduza o nome do produto desejado        |\n"+
+                                "|Se desejar canselar a operaçao digite       |\n"+
+                                "|cancelar                                    |\n"+
+                                "|                                            |\n"+
+                                "|Moedas aceites: 0.05€ , 0.10€ , 0.20€,      |\n"+
+                                "|0.50€ , 1€ , 2€                             |\n"+
+                                "##############################################" );
+
+
+
+
+        while (true) {
+
+            pm.listForClient();
+
+            while (true) {
+                System.out.println("[Saldo:" + df.format(mm.getCb().getSaldo()) + "€]");
+                String input = sc.nextLine();
+
+                try {
+                    float mon = Float.parseFloat(input);
+                    mm.getCb().AddCoin(mon, 1);
+                } catch (Exception e) {
+
+                    switch (input) {
+
+                        case "sudo":
+                            adminMode();
+                            break;
+                        case "shutDown" :
+                            System.out.println("Shuting Down...");
+                            return true;
+                        case "memMode":
+                            return false;
+                        case "cancelar":
+                            mm.giveChange(0);
+                            break;
+                        default:
+                            requestProduct(input);
+                            break;
+                    }
+                    break;
+                }
+
+            }
+        }
+
+    }
+
     public ProductMachine getProductMachine(){
         return VendingMachine.pm;
     }
@@ -80,7 +137,10 @@ public class VendingMachine {
     }
 
     public void adminMode() {
-
+        int qtd;
+        String nome;
+        float cost;
+        Product product;
         Scanner sc = new Scanner(System.in);
         SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
         DecimalFormat df = new DecimalFormat("0.00");
@@ -92,34 +152,43 @@ public class VendingMachine {
             try {
                 String comand = sc.nextLine();
                 switch (comand) {
-                    case "seeTotal" -> System.out.println(df.format(mm.getTotalValue()));
-                    case "seeMoneyToCollect" -> System.out.println(df.format(mm.MoneyToCollect()));
-                    case "seeMoney" -> mm.listAll();
-                    case "addMoney" -> mm.addThings(sc.nextInt(), sc.nextFloat());
-                    case "addPerishable" -> {
-                        int qtd = sc.nextInt();
+                    case "seeTotal":
+                        System.out.println(df.format(mm.getTotalValue()));
+                        break;
+                    case "seeMoneyToCollect" :
+                        System.out.println(df.format(mm.MoneyToCollect()));
+                        break;
+                    case "seeMoney" :
+                        mm.listAll();
+                        break;
+                    case "addMoney" :
+                        mm.addThings(sc.nextInt(), sc.nextFloat());
+                        break;
+                    case "addPerishable":
+                        qtd = sc.nextInt();
                         sc.nextLine();
-                        String nome = sc.nextLine();
-                        float cost = sc.nextFloat();
+                        nome = sc.nextLine();
+                        cost = sc.nextFloat();
                         sc.nextLine();
                         Date limitdate = sdformat.parse(sc.nextLine());
-                        Perishable product = new Perishable(nome, cost, limitdate);
+                        product = new Perishable(nome, cost, limitdate);
                         pm.addProduct(qtd, product);
-                    }
-                    case "addNonPerishable" -> {
-                        int qtd = sc.nextInt();
+                        break;
+                    case "addNonPerishable" :
+                        qtd = sc.nextInt();
                         sc.nextLine();
-                        String nome = sc.nextLine();
-                        float cost = sc.nextFloat();
+                        nome = sc.nextLine();
+                        cost = sc.nextFloat();
                         double volume = sc.nextDouble();
-                        NonPerishable product = new NonPerishable(nome, cost, volume);
+                        product = new NonPerishable(nome, cost, volume);
                         pm.addProduct(qtd, product);
-                    }
-                    case "productList" -> pm.listAllOrdered();
-                    case "Q" -> {
+                        break;
+                    case "productList" :
+                        pm.listAllOrdered();
+                        break;
+                    case "Q" :
                         System.out.println("[--------------Leaving Admim Mode-------------]");
                         return;
-                    }
 
                 }
             } catch (Exception x) {

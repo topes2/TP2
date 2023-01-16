@@ -8,10 +8,9 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
-        DecimalFormat df = new DecimalFormat("0.00");
         Scanner sc = new Scanner(System.in);
         VendingMachine vm;
-
+        Boolean shutDown = false;
 
         System.out.println("[Restore Vending Machinhe from file?]");
         if (sc.nextLine().equals("s")){
@@ -37,59 +36,35 @@ public class Main {
             vm = new VendingMachine(pm, mm);
         }
 
-        System.out.println("""
-                //////////////////////////////////////////////
-                |               Instruões                    |
-                |Intoduza o saldo                            |
-                |Introduza o nome do produto desejado        |
-                |Se desejar canselar a operaçao digite       |
-                |cancelar                                    |
-                |                                            |
-                |Moedas aceites: 0.05€ , 0.10€ , 0.20€,      |
-                |0.50€ , 1€ , 2€                             |
-                //////////////////////////////////////////////
-                """);
 
 
 
-        while (true) {
+        while (!shutDown){
 
-            vm.getProductMachine().listForClient();
+            shutDown = vm.workinkLoop();
 
-            while (true) {
-                System.out.println("[Saldo:" + df.format(vm.getMoneyMachine().getCb().getSaldo()) + "€]");
-                String input = sc.nextLine();
-
-                try {
-                    float mon = Float.parseFloat(input);
-                    vm.getMoneyMachine().getCb().AddCoin(mon, 1);
-                } catch (Exception e) {
-
-                    switch (input) {
-
-                        case "sudo":
-                            vm.adminMode();
-                            break;
-                        case "saveMachine":
-                            VendingMachine.saveMachine(vm, sc.nextLine());
-                            break;
-                        case "loadMachine":
-                            vm = VendingMachine.restoreMachine(sc.nextLine());
-                            break;
-                        case "shutDown" :
-                            System.out.println("Shuting Down...");
-                            return;
-                        case "cancelar":
-                            vm.getMoneyMachine().giveChange(0);
-                            break;
-                        default:
-                            vm.requestProduct(input);
-                            break;
-                    }
+            if(!shutDown) {
+                System.out.println("[Load or Save machinhe?]");
+                switch (sc.nextLine()){
+                    case "saveMachine":
+                        VendingMachine.saveMachine(vm, sc.nextLine());
+                        break;
+                    case "loadMachine":
+                        vm = VendingMachine.restoreMachine(sc.nextLine());
+                        break;
+                    default:
+                        break;
                 }
-
             }
+
         }
+
+
+
+
+
+
+
     }
 }
 
