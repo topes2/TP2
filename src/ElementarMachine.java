@@ -14,7 +14,6 @@ public class ElementarMachine<T> {
 
     public void addThings(int n, T thing){
 
-
         for (Element<T> element : elements) {
             if (element.getThing() == thing) {
                 int x = element.getCount();
